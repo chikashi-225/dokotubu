@@ -44,7 +44,6 @@ public class Login extends HttpServlet {
 		}else {
 			request.setAttribute("errorMesage1", "アカウントが存在していないか、ID・パスワードが違います");
 		}
-		
 
 		//���O�C����ʂɃt�H���[�h
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/loginResult.jsp");

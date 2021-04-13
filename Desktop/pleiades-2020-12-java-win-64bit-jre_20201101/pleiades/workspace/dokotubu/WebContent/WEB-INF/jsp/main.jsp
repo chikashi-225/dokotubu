@@ -22,8 +22,16 @@
 <c:if test="${errorMsg != null }">
 	<p class="error">${errorMsg }</p>
 </c:if>
+<p>
 <c:forEach var="mutter" items="${mutterList }">
-	<p><c:out value="${mutter.userName }"/>:<c:out value="${mutter.text }"/></p>
+	<br><c:out value="${mutter.userName }"/>:<br>
+			<c:out value="${mutter.text }"/>			
 </c:forEach>
+<c:forEach var="count" items="${countList }">
+	<form action="/dokotubu/GoodCountMethod" method="post">
+		<button type="submit" name="good" value="1">good</button></form>
+	<br><c:out value="${count.good }"></c:out><br>
+</c:forEach>
+</p>
 </body>
 </html>

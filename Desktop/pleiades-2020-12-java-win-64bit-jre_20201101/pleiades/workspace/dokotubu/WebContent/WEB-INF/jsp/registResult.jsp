@@ -18,7 +18,7 @@
 		</c:when>
 		<c:otherwise>
 			<p>${errorMasege2 }</p>
-			<a href="WEB-INF/jsp/accountRegist">アカウント登録へ</a>
+			<a href="/dokotubu/accountRegist.jsp">アカウント登録へ</a>
 		</c:otherwise>
 	</c:choose>
 </body>

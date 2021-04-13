@@ -3,10 +3,14 @@ package model;
 import dao.AccountDAO;
 
 public class LoginCheckLogic {
-	public User execute(User user) {
+	public boolean execute(User user) {
 		AccountDAO dao = new AccountDAO();
 		User user1 = dao.findByUser(user);
-		return user1;
+		if(user1 == null) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 
 }

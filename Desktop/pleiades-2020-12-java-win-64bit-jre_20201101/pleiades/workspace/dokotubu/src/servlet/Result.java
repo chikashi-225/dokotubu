@@ -25,27 +25,27 @@ public class Result extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//ƒŠƒNƒGƒXƒgƒpƒ‰ƒ[ƒ^‚ğæ“¾
+		//ï¿½ï¿½ï¿½Nï¿½Gï¿½Xï¿½gï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½ï¿½ï¿½æ“¾
 		request.setCharacterEncoding("UTF-8");
 		String name = request.getParameter("name");
 		String pass = request.getParameter("pass");
 
-		//UserƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+		//Userï¿½Cï¿½ï¿½ï¿½Xï¿½^ï¿½ï¿½ï¿½Xï¿½ğ¶ï¿½
 		User user = new User(name, pass);
 
-		//RegistAccountLogic‚ğŒÄ‚Ño‚·
+		//RegistAccountLogicï¿½ï¿½ï¿½Ä‚Ñoï¿½ï¿½
 		RegistAccountLogic ral = new RegistAccountLogic();
 
-		//ƒAƒJƒEƒ“ƒg“o˜^ˆ—
+		//ï¿½Aï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½oï¿½^ï¿½ï¿½ï¿½ï¿½
 		boolean gouhi = ral.execute(user);
 		if(gouhi == true) {
 			HttpSession session = request.getSession();
 			session.setAttribute("loginUser", user);
 		}else {
-			request.setAttribute("errorMasege2", "“¯‚¶ƒ†[ƒU[‚ª“o˜^‚µ‚Ä‚¢‚Ü‚·");
+			request.setAttribute("errorMasege2", "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãŒå­˜åœ¨ã—ã¦ã„ã‚‹ã‹ã€IDãƒ»ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒé–“é•ã£ã¦ã„ã¾ã™");
 		}
 
-		//ƒAƒJƒEƒ“ƒg“o˜^‰æ–Ê‚ÖƒtƒHƒ[ƒh
+		//ï¿½Aï¿½Jï¿½Eï¿½ï¿½ï¿½gï¿½oï¿½^ï¿½ï¿½Ê‚Öƒtï¿½Hï¿½ï¿½ï¿½[ï¿½h
 		RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/registResult.jsp");
 		dispatcher.forward(request, response);
 	}

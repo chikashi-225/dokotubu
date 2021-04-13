@@ -11,7 +11,7 @@ import java.util.List;
 import model.Mutter;
 
 public class MutterDAO {
-	//ƒf[ƒ^ƒx[ƒXÚ‘±‚Ég—p‚·‚éî•ñ
+	//ï¿½fï¿½[ï¿½^ï¿½xï¿½[ï¿½Xï¿½Ú‘ï¿½ï¿½Égï¿½pï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	private final String JDBC_URL = "jdbc:h2:tcp://localhost/~/dokotubu";
 	private final String DB_USER = "sa";
 	private final String DB_PASS = "";
@@ -19,21 +19,22 @@ public class MutterDAO {
 	public List<Mutter> findAll() {
 		List<Mutter> mutterList = new ArrayList<>();
 
-		//ƒf[ƒ^ƒx[ƒXÚ‘±
+		//MUTTERã‹ã‚‰ã¤ã¶ã‚„ãã‚’å–å¾—
 		try(Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
-			//SELECt•¶‚Ì€”õ
-			String sql = "SELECT ID, NAME, TEXT FROM MUTTER ORDER BY ID DESC";
+			//SELECTæ–‡ã‚’æº–å‚™
+			String sql = "SELECT ID, NAME, TEXT, GOOD FROM MUTTER ORDER BY ID DESC";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 
-			//SELECT•¶‚ğÀs
+			//SELECTæ–‡ã‚’å®Ÿè¡Œ
 			ResultSet rs = pstmt.executeQuery();
 
-			//SELECT•¶‚ÌŒ‹‰Ê‚ğArrayList‚ÉŠi”[
+			//SELECTã‹ã‚‰ã¤ã¶ã‚„ãã‚’å–å¾—
 			while(rs.next()) {
 				int id = rs.getInt("ID");
 				String userName = rs.getString("NAME");
 				String text = rs.getString("TEXT");
-				Mutter mutter = new Mutter(id, userName, text);
+				int good = rs.getInt("GOOD");
+				Mutter mutter = new Mutter(id, userName, text, good);
 				mutterList.add(mutter);
 			}
 		}catch(SQLException e) {
@@ -44,18 +45,18 @@ public class MutterDAO {
 	}
 
 	public boolean create(Mutter mutter) {
-		//ƒf[ƒ^ƒx[ƒXÚ‘±
+		//ã¤ã¶ã‚„ãã‚’MUTTERã«ä¿å­˜
 		try(Connection conn = DriverManager.getConnection(JDBC_URL, DB_USER, DB_PASS)) {
 
-			//INSERT•¶‚Ì€”õiid‚Í©“®˜A”Ô‚È‚Ì‚Åw’è‚µ‚È‚­‚Ä‚æ‚¢j
+			//INSERTã®æº–å‚™
 			String sql = "INSERT INTO MUTTER (NAME, TEXT) VALUES(?, ?)";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 
-			//INSERT•¶‚Ì’†‚ÌuHv‚Ég—p‚·‚é’l‚ğİ’è‚µSQ‚Œ‚ğŠ®¬
+			//INSERTã‚’å®Œæˆã•ã›ã‚‹
 			pstmt.setString(1, mutter.getUserName());
 			pstmt.setString(2, mutter.getText());
 
-			//INSERT•¶‚ğÀsiresult‚É‚Í’Ç‰Á‚³‚ê‚½s”‚ª‘ã“ü‚³‚ê‚éj
+			//INSERTæ–‡ã‚’é€ã‚‹
 			int result = pstmt.executeUpdate();
 			if(result != 1) {
 				return false;

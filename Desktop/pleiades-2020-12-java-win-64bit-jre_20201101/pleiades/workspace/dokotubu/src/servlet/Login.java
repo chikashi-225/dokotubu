@@ -25,30 +25,28 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//ƒŠƒNƒGƒXƒgƒpƒ‰ƒ[ƒ^‚Ìæ“¾
+		//ï¿½ï¿½ï¿½Nï¿½Gï¿½Xï¿½gï¿½pï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½^ï¿½Ìæ“¾
 		request.setCharacterEncoding("UTF-8");
 		String name = request.getParameter("name");
 		String pass = request.getParameter("pass");
 
-		//UserƒCƒ“ƒXƒ^ƒ“ƒXiƒ†[ƒU[î•ñj‚Ì¶¬
+		//Userã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆ
 		User user = new User(name, pass);
-
-		//ƒƒOƒCƒ“ˆ—
+		
+		//ï¿½ï¿½ï¿½Oï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		LoginCheckLogic lcl = new LoginCheckLogic();
-		User user1 = lcl.execute(user);
+		boolean check = lcl.execute(user);
 
-		//ƒƒOƒCƒ“ˆ—
-		try{
-			if(user1.equals(user) == true) {
-			//ƒ†[ƒU[î•ñ‚ğƒZƒbƒVƒ‡ƒ“ƒXƒR[ƒv‚É•Û‘¶
+		//ï¿½ï¿½ï¿½Oï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		if(check == true) {
 			HttpSession session = request.getSession();
 			session.setAttribute("loginUser", user);
-			}
-		}catch(NullPointerException e) {
-			request.setAttribute("errorMesage1", "ƒAƒJƒEƒ“ƒg‚ª‘¶İ‚µ‚È‚¢‚©AIDEƒpƒXƒ[ƒh‚ªˆá‚¢‚Ü‚·");
+		}else {
+			request.setAttribute("errorMesage1", "ã‚¢ã‚«ã‚¦ãƒ³ãƒˆãŒå­˜åœ¨ã—ã¦ã„ãªã„ã‹ã€IDãƒ»ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãŒé•ã„ã¾ã™");
 		}
+		
 
-		//ƒƒOƒCƒ“‰æ–Ê‚ÉƒtƒHƒ[ƒh
+		//ï¿½ï¿½ï¿½Oï¿½Cï¿½ï¿½ï¿½ï¿½Ê‚Éƒtï¿½Hï¿½ï¿½ï¿½[ï¿½h
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/loginResult.jsp");
 		dispatcher.forward(request, response);
 	}

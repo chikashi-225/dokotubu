@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.Count;
+import model.GetGoodCountLogic;
 import model.GetMutterListLogic;
 import model.Mutter;
+import model.PostGoodCountLogic;
 import model.PostMutter;
 import model.User;
 
@@ -29,54 +32,62 @@ public class Main extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		//‚Â‚Ô‚â‚«ƒŠƒXƒg‚ğæ“¾‚µ‚ÄAƒŠƒNƒGƒXƒgƒXƒR[ƒv‚É•Û‘¶
+		//ã¤ã¶ã‚„ããƒªã‚¹ãƒˆã‚’å–å¾—ã—ã¦ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚¹ã‚³ãƒ¼ãƒ—ã«ä¿å­˜
 		GetMutterListLogic getMutterListLogic = new GetMutterListLogic();
-		List<Mutter> mutterList = getMutterListLogic.excute();
+		List<Mutter> mutterList = getMutterListLogic.execute();
+		GetGoodCountLogic getGoodCountLogic = new GetGoodCountLogic();
+		List<Count> countList = getGoodCountLogic.execute();
 		request.setAttribute("mutterList", mutterList);
+		request.setAttribute("countList", countList);
 
-		//ƒƒOƒCƒ“‚µ‚Ä‚¢‚é‚©Šm”F‚·‚é‚½‚ß
-		//ƒZƒbƒVƒ‡ƒ“ƒXƒR[ƒv‚©‚çƒ†[ƒU[î•ñ‚ğæ“¾
+		//ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã„ã‚‹ã‹ç¢ºèªã™ã‚‹ãŸã‚
+		//ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚¹ã‚³ãƒ¼ãƒ—ã‹ã‚‰ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±ã‚’å–å¾—
 		HttpSession session = request.getSession();
 		User loginUser = (User) session.getAttribute("loginUser");
 
-		if(loginUser == null) { //ƒƒOƒCƒ“‚µ‚Ä‚¢‚È‚¢ê‡
-			//ƒŠƒ_ƒCƒŒƒNƒg
+		if(loginUser == null) { //ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã„ãªã‹ã£ãŸå ´åˆ
+			//ãƒ­ã‚°ã‚¤ãƒ³ç”»é¢ã«æˆ»ã‚‹
 			response.sendRedirect("/dokotubu/");
-		} else { //ƒƒOƒCƒ“‚µ‚Ä‚¢‚éê‡
-			//ƒtƒHƒ[ƒh
+		} else { //ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã„ãŸå ´åˆ
+			//ãƒ•ã‚©ãƒ¯ãƒ¼ãƒ‰
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
 			dispatcher.forward(request, response);
 		}
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse respose) throws ServletException, IOException {
-		//ƒŠƒNƒGƒXƒgƒpƒ‰ƒ[ƒ^‚Ìæ“¾
+		//ãƒªã‚¯ã‚¨ã‚¹ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å–å¾—
 		request.setCharacterEncoding("UTF-8");
 		String text = request.getParameter("text");
 
-		//“ü—Í’lƒ`ƒFƒbƒN
+		//å…¥åŠ›å€¤ãƒã‚§ãƒƒã‚¯
 		if(text != null && text.length() != 0) {
 
-			//ƒZƒbƒVƒ‡ƒ“ƒXƒR[ƒv‚É•Û‘¶‚³‚ê‚½ƒ†[ƒU[î•ñ‚ğæ“¾
+			//ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚¹ã‚³ãƒ¼ãƒ—ã«ä¿å­˜ã•ã‚Œã¦ã„ã‚‹ãƒ¦ãƒ¼ã‚¶ãƒ¼æƒ…å ±ã‚’å–å¾—
 			HttpSession session = request.getSession();
 			User loginUser = (User) session.getAttribute("loginUser");
 
-			//‚Â‚Ô‚â‚«ƒŠƒXƒg‚É’Ç‰Á
+			//ã¤ã¶ã‚„ãã‚’ã¤ã¶ã‚„ããƒªã‚¹ãƒˆã«è¿½åŠ 
 			Mutter mutter = new Mutter(loginUser.getName(), text);
 			PostMutter postMutter = new PostMutter();
-			postMutter.excute(mutter);
+			postMutter.execute(mutter);
+			PostGoodCountLogic postGoodCountLogic = new PostGoodCountLogic();
+			postGoodCountLogic.execute();
 
 		} else {
-			//ƒGƒ‰[ƒƒbƒZ[ƒW‚ğƒŠƒNƒGƒXƒgƒXƒR[ƒv‚É•Û‘¶
-			request.setAttribute("errorMsg", "‚Â‚Ô‚â‚«‚ª“ü—Í‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+			//ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚¹ã‚³ãƒ¼ãƒ—ã«ä¿å­˜
+			request.setAttribute("errorMsg", "ã¤ã¶ã‚„ãã‚’å…¥åŠ›ã—ã¦ãã ã•ã„");
 		}
 
-		//‚Â‚Ô‚â‚«ƒŠƒXƒg‚ğæ“¾‚µ‚ÄAƒŠƒNƒGƒXƒgƒXƒR[ƒv‚É•Û‘¶
+		//ã¤ã¶ã‚„ããƒªã‚¹ãƒˆã¨countListã‚’å–å¾—ã—ã¦ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚¹ã‚³ãƒ¼ãƒ—ã«ä¿å­˜
 		GetMutterListLogic getMutterListLogic = new GetMutterListLogic();
-		List<Mutter> mutterList = getMutterListLogic.excute();
+		List<Mutter> mutterList = getMutterListLogic.execute();
+		GetGoodCountLogic getGoodCountLogic = new GetGoodCountLogic();
+		List<Count> countList = getGoodCountLogic.execute();
 		request.setAttribute("mutterList", mutterList);
+		request.setAttribute("countList", countList);
 
-		//main‰æ–Ê‚ÉƒtƒHƒ[ƒh
+		//main.jspã«ãƒ•ã‚©ãƒ¯ãƒ¼ãƒ‰
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/main.jsp");
 		dispatcher.forward(request, respose);
 
